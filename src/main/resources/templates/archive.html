@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="/">Home</a>
+    <h3 th:text="${folderName}"></h3>
+    <ul>
+        <!-- ArrayList에서 각 항목을 하이퍼링크로 출력 -->
+        <li th:each="fileName : ${fileNames}">
+            <a th:href="'file?folderName=' + ${folderName} + '&fileName=' + ${folderName} + '/' + ${fileName}" th:text="${fileName}"></a>
+        </li>
+    </ul>
+</body>
+</html>

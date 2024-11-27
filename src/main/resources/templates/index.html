@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Note For All
+    <ul>
+        <!-- ArrayList에서 각 항목을 하이퍼링크로 출력 -->
+        <li th:each="folderName : ${folderNames}">
+            <a th:href="'archive?folder=' + ${folderName}" th:text="${folderName}"></a>
+        </li>
+    </ul>
+</body>
+</html>

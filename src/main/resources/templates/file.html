@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /* html과 body의 크기를 100%로 설정 */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* iframe이 부모 요소의 크기를 100%로 채우도록 설정 */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;  /* iframe의 기본 경계선 없애기 */
+        }
+    </style>
+
+</head>
+<body>
+    <a th:href="'archive?folder=' + ${folderName}" th:text="${folderName}"></a>
+    <hr>
+    <iframe th:src="@{${fileUrl}}" width="100%" height="100%"></iframe>
+</body>
+</html>
