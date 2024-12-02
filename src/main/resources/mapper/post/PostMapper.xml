@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blog.noteforall.dao.PostDao">
+
+    <select id="getPost" parameterType="int">
+
+        SELECT NO
+             , AUTHOR
+             , TITLE
+             , CONTENT
+             , CREATED_DATE
+             , CREATED_TIME
+             , LAST_CHG_DATE
+             , LAST_CHG_TIME
+             , STATUS
+        FROM noteforall.POST
+       WHERE NO = #{no}
+            
+    </select>
+
+    <insert id="post" parameterType="com.blog.noteforall.vo.PostVo">
+
+        <selectKey keyProperty="no" resultType="int" order="BEFORE">
+
+        SELECT IFNULL(MAX(NO), 0) + 1 FROM POST
+
+        </selectKey>
+
+        INSERT INTO POST 
+            ( NO               -- NO
+            , AUTHOR           -- AUTHOR
+            , TITLE            -- TITLE
+            , CONTENT          -- CONTENT
+            , CREATED_DATE     -- CREATED_DATE
+            , CREATED_TIME     -- CREATED_TIME
+            , STATUS           -- STATUS
+            )
+        VALUES 
+            ( #{no}                              -- NO
+            , #{author}                          -- author
+            , #{title}                           -- title
+            , #{content}                         -- content' : 글 내용 (HTML)
+            , DATE_FORMAT(CURDATE(), '%Y%m%d')   -- createdDate
+            , DATE_FORMAT(NOW(), '%H%i%s')       -- createdTime
+            , 'L'                                -- status
+            )
+        </insert>
+
+</mapper>

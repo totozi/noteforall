@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD MyBatis Configuration 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- MyBatis의 설정 -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/> <!-- 카멜케이스와 스네이크케이스 자동 변환 -->
+    </settings>
+
+
+
+</configuration>
