@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.blog.noteforall.dao.PostDao">
+    
+    <select id="getList" resultType="com.blog.noteforall.vo.PostVo">
+        SELECT NO
+             , AUTHOR
+             , TITLE
+             , CREATED_DATE
+             , CREATED_TIME
+             , LAST_CHG_DATE
+             , LAST_CHG_TIME
+             , STATUS
+        FROM POST
+    </select>
 
     <select id="getPost" parameterType="int">
 

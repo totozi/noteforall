@@ -1,5 +1,7 @@
 package com.blog.noteforall.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,11 @@ public class PostService {
 
     public PostVo getPost(int no) {
         return postDao.getPost(no);
+    }
+
+    public List<PostVo> getList() {
+        
+        return postDao.getList();
     }
     
 }

@@ -34,8 +34,11 @@
     // 버튼 클릭 시 Summernote의 내용을 가져와서 서버로 전송
     $('#submitBtn').click(function() {
         var content = $('#summernote').summernote('code');  // 에디터 내용 가져오기
+        
         sendContentToServer(content);  // 서버로 전송
     });
+
+
       
     
     // POST 요청을 보내는 함수
@@ -45,6 +48,8 @@
       const regex = /data:image\/(png|jpg|jpeg|gif|bmp|webp);base64,([A-Za-z0-9+/=]+)/g;
 
       // 정규식 매칭 결과 추출
+      let newContent;
+      let uploadedUrls = []; // 응답으로 받은 url 담을 배열
       let base64Images = [];
       let match;
       
@@ -55,17 +60,73 @@
       }
       
       console.log(base64Images);
+
+      for (let i = 0; i < base64Images.length; i++) {
+        const base64Image = base64Images[i];
+
+        // Base64 데이터와 메타정보 분리
+        const base64Data = base64Image.split(',')[1]; // 실제 Base64 데이터
+        const mimeType = base64Image.match(/data:(.*?);base64/)[1]; // MIME 타입
+
+        // Base64 -> Blob 변환
+        const binaryData = atob(base64Data);
+        const arrayBuffer = new Uint8Array(binaryData.length);
+
+        for (let j = 0; j < binaryData.length; j++) {
+            arrayBuffer[j] = binaryData.charCodeAt(j);
+        }
+
+        const blob = new Blob([arrayBuffer], { type: mimeType });
+
+        // FormData 생성 및 Blob 추가
+        const formData = new FormData();
+        formData.append("file", blob, `image${i + 1}.${mimeType.split('/')[1]}`);
+
+        // 서버로 개별 전송
+        $.ajax({
+            url: "fileupload", // 업로드 API URL
+            type: "POST",
+            data: formData,
+            async: false, // 동기 방식으로 설정
+            processData: false, // jQuery가 데이터 처리하지 않도록 설정
+            contentType: false, // Content-Type 헤더 자동 설정
+            success: function (response) {
+                console.log(`uploaded successfully.`);
+                console.log(response);
+                            // 서버 응답에서 파일 URL을 받아서 배열에 저장
+            uploadedUrls.push(response.fileUrl);
+
+            // 파일 URL이 모두 업로드되었으면 content를 수정
+            if (uploadedUrls.length === base64Images.length) {
+                // base64 이미지를 URL로 교체
+                newContent = content;
+                uploadedUrls.forEach((url, index) => {
+                    // 기존 base64 데이터를 해당 URL로 대체
+                    newContent = newContent.replace(base64Images[index], url);
+                });
+
+                console.log('Updated content:', newContent);
+                
+                // 이제 새로운 content를 사용하면 됩니다.
+            }
+
+            },
+            error: function (xhr, status, error) {
+                console.error(`Error uploading image ${i + 1}:`, error);
+            },
+        }); 
+      }
+
+
       // TODO : 서버에 먼저 파일 저장 후 url 리턴받아서 img를 base64형식에서 src 참조 방식으로 바꾸기
 
       var title = $('#title').val();
-
-      
-      
+  
       
       $.ajax({
           url: '/post/POST',  // 서버의 API URL
           type: 'POST',
-          data: { content : content
+          data: { content : newContent
                 , title   : title
                 } ,
           success: function(response) {
