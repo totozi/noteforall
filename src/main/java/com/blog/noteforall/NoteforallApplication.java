@@ -8,6 +8,8 @@ public class NoteforallApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NoteforallApplication.class, args);
+		String osName = System.getProperty("os.name");
+		System.out.println("Operating System: " + osName);
 	}
 
 }
