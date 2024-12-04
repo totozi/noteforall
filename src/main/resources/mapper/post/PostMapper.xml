@@ -58,4 +58,16 @@
             )
         </insert>
 
+        <insert id="insertUrlAndPostNo" parameterType="com.blog.noteforall.vo.PostVo">
+
+
+            INSERT INTO MAP_URL_POST 
+                ( NO     -- NO
+                , URL   -- file uuid 포함한 url
+                )
+            VALUES 
+                ( #{no}  -- NO
+                , #{url} -- file uuid 포함한 url
+                )
+        </insert>
 </mapper>

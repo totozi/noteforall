@@ -14,4 +14,5 @@ public class PostVo {
     private String lastChgDate;        // LAST CHANGED DATE
     private String lastChgTime;        // LAST CHANGED TIME
     private char status;               // STATUS VALUE FOR DELETION
+    private String url;                // File UUID 매핑용
 }

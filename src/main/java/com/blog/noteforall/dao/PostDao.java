@@ -14,5 +14,7 @@ public interface PostDao {
     PostVo getPost(int no);
 
     List<PostVo> getList();
+
+    void insertUrlAndPostNo(PostVo vo);
     
 }

@@ -61,6 +61,12 @@
       
       console.log(base64Images);
 
+      console.log("base64Images.length : " + base64Images.length);
+      // for 문 안타면 newContent null됨
+      if(base64Images.length == 0)
+      {
+        newContent = content;
+      }
       for (let i = 0; i < base64Images.length; i++) {
         const base64Image = base64Images[i];
 
@@ -71,6 +77,8 @@
         // Base64 -> Blob 변환
         const binaryData = atob(base64Data);
         const arrayBuffer = new Uint8Array(binaryData.length);
+
+        
 
         for (let j = 0; j < binaryData.length; j++) {
             arrayBuffer[j] = binaryData.charCodeAt(j);
@@ -121,14 +129,21 @@
       // TODO : 서버에 먼저 파일 저장 후 url 리턴받아서 img를 base64형식에서 src 참조 방식으로 바꾸기
 
       var title = $('#title').val();
-  
+      
+      
+      var jsonUploadedUrls;
+      jsonUploadedUrls = JSON.stringify(uploadedUrls);
+      console.log("jsonUploadedUrls : " + jsonUploadedUrls);
       
       $.ajax({
           url: '/post/POST',  // 서버의 API URL
           type: 'POST',
-          data: { content : newContent
-                , title   : title
-                } ,
+          contentType: 'application/json', // JSON 형식으로 전송
+          data: JSON.stringify({
+                content: newContent,
+                title: title,
+                jsonUploadedUrls: jsonUploadedUrls
+            }), // JSON으로 변환
           success: function(response) {
               alert('Content saved successfully!');
               console.log(response);  // 서버 응답 출력

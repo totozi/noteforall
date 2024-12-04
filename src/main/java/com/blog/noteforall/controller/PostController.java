@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,15 +77,20 @@ public class PostController {
     }
 
     @PostMapping("/POST")
-    public ResponseEntity<String> postPost(HttpServletRequest request) throws Exception {
+    public ResponseEntity<String> postPost(@RequestBody Map<String, Object> request) throws Exception {
 
-        System.out.println("content : " + request.getParameter("content"));
+        System.out.println("content : " + request.get("content").toString());
+
+        System.out.println("jsonUploadedUrls : " + request.get("jsonUploadedUrls").toString());
 
         // 임시로 작성자는 IP로..
         PostVo post = new PostVo();
+
         tmpSetVo(request, post);
 
-        postService.post(post);
+        String jsonUploadedUrls = request.get("jsonUploadedUrls").toString();
+
+        postService.post(post, jsonUploadedUrls);
         
         return ResponseEntity.ok("Content received and saved successfully!");
     }
@@ -159,25 +165,24 @@ public class PostController {
     
 
         
-    private void tmpSetVo(HttpServletRequest request, PostVo post) {
+    private void tmpSetVo(Map<String, Object> request, PostVo post) {
 
         // 클라이언트의 IP 주소 얻기
-        String clientIp = request.getRemoteAddr();
+        // String clientIp = request.getRemoteAddr();
         
-        // X-Forwarded-For 헤더가 있으면, 실제 IP 주소를 구할 수 있는 경우
-        String forwardedIps = request.getHeader("X-Forwarded-For");
-        if (forwardedIps != null) {
+        // // X-Forwarded-For 헤더가 있으면, 실제 IP 주소를 구할 수 있는 경우
+        // String forwardedIps = request.getHeader("X-Forwarded-For");
+        // if (forwardedIps != null) {
 
-            // 여러 개의 IP가 있을 수 있으므로 첫 번째 IP를 사용
-            clientIp = forwardedIps.split(",")[0];
+        //     // 여러 개의 IP가 있을 수 있으므로 첫 번째 IP를 사용
+        //     clientIp = forwardedIps.split(",")[0];
 
-        }
+        // }
 
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
+        String title = (String) request.get("title");
+        String content = (String) request.get("content");
 
-        post.setAuthor(clientIp);
-        post.setContent(clientIp);
+        post.setAuthor("default");
         post.setTitle(title);
         post.setContent(content);
     }
