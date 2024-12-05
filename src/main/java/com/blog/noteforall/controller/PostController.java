@@ -3,6 +3,7 @@ package com.blog.noteforall.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.http.HttpRequest;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import com.blog.noteforall.service.PostService;
 import com.blog.noteforall.vo.PostVo;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/post")
 @Controller
@@ -68,13 +70,43 @@ public class PostController {
     
 
     @GetMapping("/EDIT")
-    public String getEditor(Model model) {
+    public String getEditor(Model model, HttpServletRequest  request) {
 
-        System.out.println("getEditor");
+        HttpSession session = request.getSession(false);
+
+        System.out.println("session : " + session);
+
+        if (session != null && session.getAttribute("editor").equals("editor")) {
+            System.out.println("session.name : " + session.getAttribute("editor"));
+
+            return "editor";
+        } else {
+            return "login";
+        }  
         
 
-        return "editor"; // src/main/resources/templates/post.html
+         // src/main/resources/templates/post.html
     }
+
+    @PostMapping("/login")
+    public String postMethodName(@RequestParam("password") String password, HttpServletRequest request) {
+
+        System.out.println("password : " + password);
+
+        // TODO : database에서 체크하기
+        if (password.equals("1234")) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("editor", "editor");
+
+            return "redirect:/post/EDIT";
+        }
+        else {
+            return "index";
+        }
+
+
+    }
+    
 
     @PostMapping("/POST")
     public ResponseEntity<String> postPost(@RequestBody Map<String, Object> request) throws Exception {
