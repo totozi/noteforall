@@ -16,5 +16,7 @@ public interface PostDao {
     List<PostVo> getList();
 
     void insertUrlAndPostNo(PostVo vo);
+
+    int isAdmin(String password);
     
 }

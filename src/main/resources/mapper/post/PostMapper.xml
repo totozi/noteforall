@@ -59,8 +59,6 @@
         </insert>
 
         <insert id="insertUrlAndPostNo" parameterType="com.blog.noteforall.vo.PostVo">
-
-
             INSERT INTO MAP_URL_POST 
                 ( NO     -- NO
                 , URL   -- file uuid 포함한 url
@@ -70,4 +68,12 @@
                 , #{url} -- file uuid 포함한 url
                 )
         </insert>
+
+        <select id="isAdmin" parameterType="String">
+            SELECT COUNT(*)
+             FROM noteforall.ADMIN
+            WHERE ID       = 'ADMIN'
+              AND PASSWORD = #{PASSWORD}
+        </select>
+
 </mapper>

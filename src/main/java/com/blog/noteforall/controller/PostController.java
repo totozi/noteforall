@@ -69,7 +69,7 @@ public class PostController {
     }
     
 
-    @GetMapping("/EDIT")
+    @GetMapping("/edit")
     public String getEditor(Model model, HttpServletRequest  request) {
 
         HttpSession session = request.getSession(false);
@@ -84,8 +84,6 @@ public class PostController {
             return "login";
         }  
         
-
-         // src/main/resources/templates/post.html
     }
 
     @PostMapping("/login")
@@ -93,8 +91,13 @@ public class PostController {
 
         System.out.println("password : " + password);
 
-        // TODO : database에서 체크하기
-        if (password.equals("1234")) {
+        boolean isAdmin = false;
+
+        isAdmin = postService.isAdmin(password);
+
+        System.out.println("isAdmin : " + isAdmin);
+
+        if (isAdmin) {
             HttpSession session = request.getSession(true);
             session.setAttribute("editor", "editor");
 
@@ -108,7 +111,7 @@ public class PostController {
     }
     
 
-    @PostMapping("/POST")
+    @PostMapping("/post")
     public ResponseEntity<String> postPost(@RequestBody Map<String, Object> request) throws Exception {
 
         System.out.println("content : " + request.get("content").toString());

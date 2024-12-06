@@ -46,5 +46,19 @@ public class PostService {
         
         return postDao.getList();
     }
+
+    public boolean isAdmin(String password) {
+        
+        int isAdmin = 0;
+
+        isAdmin = postDao.isAdmin(password);
+
+        if (isAdmin == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     
 }

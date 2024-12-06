@@ -6,11 +6,10 @@
     <title>List of Posts</title>
 </head>
 <body>
+    <a href="/"><button>HOME</button></a>
     <ul>
         <!-- ArrayList에서 각 항목을 하이퍼링크로 출력 -->
-        <li th:each="vo : ${voList}">
-            <a th:href="@{|/post/${vo.no}|}" th:text="${vo.no} + '. ' +${vo.title}"></a>
-        </li>
+        <li th:each="vo : ${voList}"><a th:href="@{|/post/${vo.no}|}" th:text="${vo.no} + '. ' +${vo.title}"></a></li>
     </ul>
 </body>
 </html>
